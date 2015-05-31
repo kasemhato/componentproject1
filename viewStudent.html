@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title> {{name}}'s Info </title>
+	</head>
+	
+	<body>
+		<h3> {{name}}'s Information : </h3>
+		<p>Name: {{name}}</p>
+		<p>E-Mail: {{email}}</p>
+		<p>Major: {{major}}</p>
+		<p>Phone Number: {{phone}}</p>
+		<p>Student ID: {{ID}}</p>
+		
+		<form action = "/editStudent" method = "post">
+			<input type = "submit" value = "Edit Student">
+		</form>
+		
+		<form action = "/viewSchedule" method = "post">
+			<input type = "submit" value = "back">
+		</form>
+	</body>
+</html>

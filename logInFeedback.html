@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title> Logged In </title>
+	</head>
+	
+	<body>
+		{% if isAdmin %}
+		<p> Admin {{name}} logged in successfully <p>
+		<form action="/adminPage" method="post">
+			<input type = "submit" value="continue"><br><br>
+		</form>
+		{% else %}
+		<p> Student {{name}} logged in successfully <p>
+		<form action="/viewSchedule" method="post">
+			<input type = "submit" value="continue"><br><br>
+		</form>
+		{% endif %}
+	</body>
+</html>

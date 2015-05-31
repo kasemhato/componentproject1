@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title> Admin Panel </title>
+</head>
+
+<body>
+	<h3> Welcome {{name}} </h3>
+	<form action = "/viewStudentAdmin" method = "post">
+		<label for = "studentID">Student ID </label>
+		<input name = "studentID" type= "text" value= "">
+		<input type= "submit" value= "Check student">
+	</form>
+	
+	<form action = "/viewCourseAdmin" method = "post">
+		<label for = "courseID">Course Code </label>
+		<input name = "courseID" type= "text" value= "">
+		<input type= "submit" value= "Check course">
+	</form>
+	<form action = "/" method = "post">
+			<input type = "submit" value = "Log Out">
+	</form>
+</body>
+</html>

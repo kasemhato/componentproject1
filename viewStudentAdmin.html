@@ -1,0 +1,53 @@
+<html>
+<head>
+	<title> Admin Panel </title>
+</head>
+
+<body>
+	<h3>Student Information: </h3>
+	<table border='1'>
+		<tr>
+			<td><strong>ID</strong></td>
+			<td><strong>Name</strong></td>
+			<td><strong>Email</strong></td>
+			<td><strong>Phone #</strong></td>
+			<td><strong>Major</strong></td>
+		</tr>
+		<tr>
+			<td>{{student.ID}}</td>
+			<td>{{student.name}}</td>
+			<td>{{student.email}}</td>
+			<td>{{student.phone}}</td>
+			<td>{{student.major}}</td>
+		</tr>
+	</table>
+		
+	{% if courses.get %}
+	<h3>Courses that this student registered: </h3>	
+	<table border='1'>
+		<tr>
+			<td><strong>Code</strong></td>
+			<td><strong>Subject</strong></td>
+			<td><strong>Days</strong></td>
+			<td><strong>Time</strong></td>
+			<td><strong>Instructor</strong></td>
+		</tr>
+		{% for s in courses %}
+		<tr>
+			<td>{{s.course.code}}</td>
+			<td>{{s.course.name}}</td>
+			<td>{{s.course.days}}</td>
+			<td>{{s.course.time}}</td>
+			<td>{{s.course.instructor}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% else %}
+	<p style='color : red'> Student did not register for courses<p>
+	{% endif %}
+	<br><br>
+	<form action = "/adminPage" method = "post">
+		<input type = "submit" value = "back">
+	</form>
+</body>
+</html>

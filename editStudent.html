@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<title> Edit Student </title>
+	</head>
+	
+	<body>
+		<h1>Edit :</h1>
+		<form action = "/studentEdited" method = "post">
+			<label for = "name">Name : </label>
+			<input name = "name" type = "text" value="{{name}}"><br><br>
+			
+			<label for = "password">Password : </label>
+			<input name = "password" type = "password" value="{{password}}"><br><br>
+			
+			<label for = "phone">Phone number : </label>
+			<input name = "phone" type = "text" value="{{phone}}"><br><br>
+			
+			<label for = "email">E-Mail : </label>
+			<input name = "email" type = "text" value="{{email}}"><br><br>
+			
+			<label for = "major">Major : </label>
+			<input name = "major" type = "text" value="{{major}}"><br><br>
+			
+			<label for = "ID">Student ID : </label>
+			<input name = "ID" type = "text" value="{{ID}}"><br><br>
+			
+			<input type = "submit" value="Save"><br>
+		</form>
+		<form action="/viewStudent" method="post">
+			<input type = "submit" value="back"><br><br>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,56 @@
+application: componentproject1
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /registerStudent
+  script: main.app
+  
+- url: /studentAdded
+  script: main.app
+  
+- url: /logInFeedback
+  script: main.app
+  
+- url: /viewSchedule
+  script: main.app
+  
+- url: /addSubject
+  script: main.app
+  
+- url: /subjectAdded
+  script: main.app
+  
+- url: /subjectDeleted
+  script: main.app
+
+- url: /viewStudent
+  script: main.app
+  
+- url: /editStudent
+  script: main.app
+  
+- url: /studentEdited
+  script: main.app
+  
+- url: /adminPage
+  script: main.app
+  
+- url: /viewStudentAdmin
+  script: main.app
+  
+- url: /viewCourseAdmin
+  script: main.app
+
+- url: /.*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
