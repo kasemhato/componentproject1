@@ -24,6 +24,8 @@ class Course(db.Model):
     time = db.StringProperty()
     days = db.StringProperty()
     code = db.StringProperty()
+    credits = db.IntegerProperty() #new
+    pre = db.StringListProperty() #new
 
     def getKey(self):
         return self.key()
@@ -37,6 +39,8 @@ class Student(db.Model):
     major = db.StringProperty()
     ID = db.StringProperty()
     isAdmin = db.BooleanProperty()
+    creditscount = db.IntegerProperty() #new
+    passed = db.StringListProperty() #new
 
     def getKey(self):
         return self.key()
@@ -60,6 +64,7 @@ def init():
         s.email = "q.elhato@gju.edu.jo"
         s.major = "CS"
         s.ID = "20131501035"
+        s.creditscount = 0
         s.isAdmin = True
         s.put()
 
@@ -72,23 +77,26 @@ def init():
         c.time = "09:30"
         c.days = "SUN/TUE"
         c.code = "CS311"
+        c.credits = 4
         c.put()
 
-    c = Course.get_or_insert('alg')
-    if c.name:
+    c1 = Course.get_or_insert('alg')
+    if c1.name:
         pass
     else:
-        c.name = "Algorithms And Data Structure"
-        c.instructor = "Dr. Cristina Class"
-        c.time = "09:30"
-        c.days = "MON/WED"
-        c.code = "CS211"
-        c.put()
+        c1.name = "Algorithms And Data Structure"
+        c1.instructor = "Dr. Cristina Class"
+        c1.time = "09:30"
+        c1.days = "MON/WED"
+        c1.code = "CS211"
+        c1.credits = 4
+        c1.pre.append("CS111")
+        c1.put()
 
     r = Registration.get_or_insert('r')
     if r.student:
         pass
     else:
         r.student = s
-        r.course = c
+        r.course = c1
         r.put()

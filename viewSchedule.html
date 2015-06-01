@@ -23,6 +23,8 @@
 			<td><strong>Subject</strong></td>
 			<td><strong>Days</strong></td>
 			<td><strong>Time</strong></td>
+			<td><strong>Pre-requisites</strong></td>
+			<td><strong>Credit Hours</strong></td>
 			<td><strong>Instructor</strong></td>
 		</tr>
 		{% for s in subjects %}
@@ -31,10 +33,13 @@
 			<td>{{s.course.name}}</td>
 			<td>{{s.course.days}}</td>
 			<td>{{s.course.time}}</td>
+			<td>{% if s.course.pre %}{{s.course.pre}}{% else %} None{% endif %}</td>
+			<td>{{s.course.credits}}</td>
 			<td>{{s.course.instructor}}</td>
 		</tr>
 		{% endfor %}
-		</table>
+		</table><br>
+		<h3>Student is registered for {{student.creditscount}} credit hours</h3><br>
 		{% else %}
 		<p style='color : red'> Student did not register for courses yet<p>
 		{% endif %}

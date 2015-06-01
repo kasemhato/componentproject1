@@ -5,7 +5,7 @@
 	
 	<body>
 		<h3> Choose a subject to add: <h3>
-		{% if subjects.get %}
+		{% if subjects %}
 		<form action = "/subjectAdded" method = "post">
 		
 			<table border='1'>
@@ -14,6 +14,8 @@
 			<td><strong>Subject</strong></td>
 			<td><strong>Days</strong></td>
 			<td><strong>Time</strong></td>
+			<td><strong>Pre-requisites</strong></td>
+			<td><strong>Credit Hours</strong></td>
 			<td><strong>Instructor</strong></td>
 		</tr>
 		{% for s in subjects %}
@@ -22,6 +24,10 @@
 			<td>{{s.name}}</td>
 			<td>{{s.days}}</td>
 			<td>{{s.time}}</td>
+			
+			<td>{% if s.pre %}{{s.pre}}{% else %} None{% endif %}</td>
+			
+			<td>{{s.credits}}</td>
 			<td>{{s.instructor}}</td>
 		</tr>
 		{% endfor %}

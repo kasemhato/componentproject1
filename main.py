@@ -76,6 +76,7 @@ class StudentAdded(BaseHandler):
         s.email = email
         s.major = major
         s.ID = ID
+        s.creditscount = 0
         s.isAdmin = False
         s.put()
 
@@ -98,6 +99,8 @@ class logInFeedback(BaseHandler):
             self.session['phone'] = s.phone
             self.session['email'] = s.email
             self.session['major'] = s.major
+            self.session['creditscount'] = s.creditscount
+            self.session['passed'] = s.passed
 
             context = {
                 'isAdmin': s.isAdmin,
@@ -109,13 +112,25 @@ class logInFeedback(BaseHandler):
             self.redirect('/')
 
 class viewSchedulePage(BaseHandler):
-    def post(self):
-        q = db.Query(Student).filter('ID =', self.session.get('ID'))
-        s = q.get()
+    def get(self):
+        s = db.Query(Student).filter('ID =', self.session.get('ID')).get()
         sq = db.Query(Registration).filter('student =', s.key()) #get the subjects that this student takes
         context = {
             'subjects': sq,
-            'name': self.session.get('name')
+            'name': self.session.get('name'),
+            'student': s
+        }
+        file = os.path.join(os.path.dirname(__file__), 'viewSchedule.html')
+        self.response.write("can't register more than 21 credit hours")
+        self.response.out.write(template.render(file, context))
+
+    def post(self):
+        s = db.Query(Student).filter('ID =', self.session.get('ID')).get()
+        sq = db.Query(Registration).filter('student =', s.key()) #get the subjects that this student takes
+        context = {
+            'subjects': sq,
+            'name': self.session.get('name'),
+            'student': s
         }
         file = os.path.join(os.path.dirname(__file__), 'viewSchedule.html')
 
@@ -126,41 +141,75 @@ class addSubjectPage(BaseHandler):
         q = db.Query(Course)
         student = db.Query(Student).filter('ID =', self.session.get('ID')).get()
         qr = db.Query(Registration).filter('student =',student.getKey())
-        for entry in qr:
-            q.filter('name !=', entry.course.name)
+        if student.creditscount < 22 :
+            myList = list()
+            for course in q:
+                flag = 0
+                for entry in qr:
+                    if entry.course.key() == course.key():
+                        flag = 1
 
-        context ={
-            'subjects' : q
-        }
-        file = os.path.join(os.path.dirname(__file__), 'addSubject.html')
+                if flag == 0:
+                    myList.append(course)
 
-        self.response.out.write(template.render(file, context))
+            context ={
+                'subjects' : myList,
+                'registeration' : qr
+            }
+            file = os.path.join(os.path.dirname(__file__), 'addSubject.html')
+
+            self.response.out.write(template.render(file, context))
+        else:
+            self.redirect("/viewSchedule")
 
 class subjectAddedPage(BaseHandler):
     def post(self):
         name = self.request.get('subject')
         subject = Course.get(name)
         student = db.Query(Student).filter('ID =', self.session.get('ID')).get()
+        qr = db.Query(Registration).filter('student =', student.getKey())
+        flag = 1
+        if student.creditscount + subject.credits < 22:
+            for entry in qr:
+                if entry.course.time == subject.time and entry.course.days == subject.days:
+                    flag = 0
+            if flag:
+                student.creditscount += subject.credits
+                self.session['creditscount'] = student.creditscount + subject.credits
+                student.put()
 
-        register = Registration()
-        register.course = subject
-        register.student = student
-        register.put()
+                register = Registration()
+                register.course = subject
+                register.student = student
+                register.put()
+                html = "Subject registered successfully"
+            else:
+                html = "You have a conflict"
+
+        else:
+            html = "Can't register more than 21 credit hours"
+
 
         context ={
-            'subject' : subject
-        }
+                'html': html,
+                'subject' : subject
+            }
         file = os.path.join(os.path.dirname(__file__), 'subjectAdded.html')
 
         self.response.out.write(template.render(file, context))
 
 class subjectDeletedPage(BaseHandler):
     def post(self):
+        student = db.Query(Student).filter('ID =', self.session.get('ID')).get()
         key = self.request.get('subject')
         subject = Registration.get(key)
         name = subject.course.name
         if subject.course.name:
+            student.creditscount -= subject.course.credits
+            self.session['creditscount'] = student.creditscount - subject.course.credits
+            student.put()
             subject.delete()
+
             context ={
                 'name' : name
             }
