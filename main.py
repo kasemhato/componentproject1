@@ -173,15 +173,17 @@ class subjectAddedPage(BaseHandler):
             for entry in qr:
                 if entry.course.time == subject.time and entry.course.days == subject.days:
                     flag = 0
-                    preflag = 0
                     html = "You have a conflict"
-                    if subject.pre:
-                        for p in subject.pre:
-                            for pa in student.passed:
-                                if p == pa:
-                                    preflag += 1
-                    if preflag != len(subject.pre):
-                        html = "You need to pass the pre requisites"
+
+            preflag = 0
+            if subject.pre:
+                for p in subject.pre:
+                    for pa in student.passed:
+                        if p == pa:
+                            preflag += 1
+            if preflag != len(subject.pre):
+                flag = 0
+                html = "You need to pass the pre requisites"
 
 
             if flag:
